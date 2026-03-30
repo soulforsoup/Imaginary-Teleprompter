@@ -38,7 +38,7 @@
   "main": "main.js",
   "dependencies": {
     "electron-squirrel-startup": "1.0.0",
-    "shelljs": "0.8.1",
+    "shelljs": "0.8.5",
     "deb-version-compare": "git+https://github.com/sdumetz/node-deb-version-compare.git"
   },
   "devDependencies": {
