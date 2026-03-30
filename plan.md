@@ -57,47 +57,14 @@ Based on `SPEC.md`. Work top-to-bottom within each phase.
 
 ---
 
-## Phase 3 — UI Modernization
+## Phase 3 — UI Modernization ✅ DONE
 
-### Step 3.1 — Fonts
-- [ ] Add Google Fonts `<link>` for `DM Sans` and `JetBrains Mono` to `index.html`, `site.html`
-- [ ] Add `<link rel="preload">` for both fonts
-- [ ] Update CSS variable declarations in `editor.css` with new font stack
-- [ ] Update `.clock` and teleprompter display font to `JetBrains Mono`
-
-### Step 3.2 — Color Variables
-- [ ] Define CSS custom properties in `editor.css`:
-  ```css
-  :root {
-    --bg-deep: #0d0d0f;
-    --bg-panel: #1a1a1e;
-    --bg-input: #232328;
-    --accent: #e8a429;
-    --accent-hover: #f5b83d;
-    --text-primary: #f0f0f0;
-    --text-muted: #888890;
-    --border: #2e2e34;
-    --success: #3ecf6e;
-    --danger: #e84a4a;
-  }
-  ```
-- [ ] Audit all hardcoded colors in `editor.css`, `teleprompter.css`, `teleprompter-themes.css`
-- [ ] Replace hardcoded colors with CSS variables
-- [ ] Apply `--bg-deep` to `body`, `--bg-panel` to sidebar/cards, `--accent` to buttons
-
-### Step 3.3 — Button & Input Styling
-- [ ] Update `.btn` base styles in `editor.css` — flat design, `--accent` background
-- [ ] Update input/select styles to match dark theme
-- [ ] Remove old Bootstrap 3 button shadows and gradients
-
-### Step 3.4 — Icon Sprites → Inline SVGs
-- [ ] Identify all icon sprite usage in `index.html` / `site.html`
-- [ ] Replace sprite `<use>` references with inline SVGs or a modern icon CDN (Phosphor Icons)
-- [ ] Update CSS to style icons consistently
-
-### Step 3.5 — Toast Styles
-- [ ] Add `.toast` styles to `editor.css` (slide-in from bottom-right, 3s auto-dismiss)
-- [ ] Ensure toast matches dark theme (not default Bootstrap white)
+- Google Fonts (DM Sans + JetBrains Mono) with preload
+- Full CSS custom property block in `editor.css`
+- Flat buttons with amber accent, inputs with dark styling
+- Icon sprites replaced with Phosphor Icons CDN
+- Toast now dark-theme compatible
+- Commit: `68a6145`
 
 ---
 
