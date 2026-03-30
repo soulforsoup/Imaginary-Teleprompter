@@ -29,6 +29,13 @@
 	<meta property="fb:app_id" content="196769633992905">
 	<title>Imaginary Teleprompter by Imaginary Sense</title>
 	<link rel="icon" href="favicon.ico" type="image/x-icon">
+	<!-- Google Fonts: DM Sans + JetBrains Mono -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+	<!-- Phosphor Icons CDN -->
+	<script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js" defer></script>
 	<link rel="stylesheet" href="css/reset.css">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/docs.min.css">
@@ -57,13 +64,13 @@
 			<div class="container">
 				<div class='row'>
 					<ul class="nav navbar-nav me-auto d-none d-sm-block" style="padding-right:20px;">
-						<li><a id="menu-toggle" href="#menu-toggle"><img style="width:26px;" src="fonts/noto-emoji-master/emoji_u1f4be.svg"></a></li>
+						<li><a id="menu-toggle" href="#menu-toggle" aria-label="Toggle sidebar"><i class="ph ph-list" style="font-size:26px; color: var(--text-primary);"></i></a></li>
 					</ul>
 					<div class="navbar-header">
 						<a class="external navbar-brand" href="https://imaginary.tech/teleprompter/" target="_blank"><img src="img/logo.png" alt="Teleprompter" ></a>
 					</div>
 					<ul class="nav navbar-nav ms-auto">
-						<li><a id="advConfig" href="#content" data-toggle="collapse"><img style="width:26px;" src="fonts/noto-emoji-master/emoji_u2699.svg"></a></li>
+						<li><a id="advConfig" href="#content" data-toggle="collapse" aria-label="Settings"><i class="ph ph-gear" style="font-size:26px; color: var(--text-primary);"></i></a></li>
 						<li><a id="updateIt" class="hidden" href=" ">Update</a></li>
 						<li><a id="promptIt" href=" ">Prompt It!</a></li>
 					</ul>
