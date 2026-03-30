@@ -21,6 +21,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;">
 	<meta property="og:title" content="Imaginary Teleprompter">
 	<meta property="og:site_name" content="Imaginary Sense">
 	<meta property="og:url" content="https://imaginary.tech/teleprompter/">
@@ -44,6 +45,7 @@
 	<link rel="stylesheet" href="css/prompt.css">
 	<link rel="stylesheet" href="css/teleprompter-themes.css">
 	<link rel="stylesheet" href="css/mobilehide.css">
+	<link rel="stylesheet" href="css/print.css" media="print">
 	<script src="ckeditor/ckeditor.js"></script>
 	<!--<script src="tinymce/tinymce.min.js"></script>-->
 </head>
@@ -70,9 +72,12 @@
 						<a class="external navbar-brand" href="https://imaginary.tech/teleprompter/" target="_blank"><img src="img/logo.png" alt="Teleprompter" ></a>
 					</div>
 					<ul class="nav navbar-nav ms-auto">
+						<li><span id="saveStatus" class="save-status" aria-live="polite"></span></li>
+						<li><a id="copyPlainText" href="#" aria-label="Copy as plain text" title="Copy as plain text"><i class="ph ph-copy" style="font-size:22px; color: var(--text-muted);"></i></a></li>
+						<li><a id="printScript" href="#" aria-label="Print script" title="Print script"><i class="ph ph-printer" style="font-size:22px; color: var(--text-muted);"></i></a></li>
 						<li><a id="advConfig" href="#content" data-toggle="collapse" aria-label="Settings"><i class="ph ph-gear" style="font-size:26px; color: var(--text-primary);"></i></a></li>
-						<li><a id="updateIt" class="hidden" href=" ">Update</a></li>
-						<li><a id="promptIt" href=" ">Prompt It!</a></li>
+						<li><a id="updateIt" class="hidden" href=" " aria-label="Update teleprompter">Update</a></li>
+						<li><a id="promptIt" href=" " aria-label="Start teleprompter">Prompt It!</a></li>
 					</ul>
 				</div>
 			</div>
@@ -133,28 +138,28 @@
 								<label for="speed">Speed:</label>
 								<label for="speed" id="speedValue">4.0</label>
 							</small>
-							<input type="range" id="speed" name="speed" data-slider-value="4.0" data-slider-step="0.5" data-slider-min="1" data-slider-max="20" data-slider-ticks="[1,4,20]" data-slider-ticks-snap-bounds="0">
+							<input type="range" id="speed" name="speed" aria-label="Speed" data-slider-value="4.0" data-slider-step="0.5" data-slider-min="1" data-slider-max="20" data-slider-ticks="[1,4,20]" data-slider-ticks-snap-bounds="0">
 						</div>
 						<div class='col-sm-3'>
 							<small>
 								<label for="acceleration">Acceleration:</label>
 								<label for="acceleration" id="accelerationValue">1.45</label>
 							</small>
-							<input type="range" id="acceleration" name="acceleration" data-slider-value="1.45" data-slider-min="0.5" data-slider-max="1.8" data-slider-step="0.05" data-slider-ticks="[0.5,1.45,1.8]" data-slider-ticks-snap-bounds="0">
+							<input type="range" id="acceleration" name="acceleration" aria-label="Acceleration" data-slider-value="1.45" data-slider-min="0.5" data-slider-max="1.8" data-slider-step="0.05" data-slider-ticks="[0.5,1.45,1.8]" data-slider-ticks-snap-bounds="0">
 						</div>
 						<div class='col-sm-3'>
 							<small>
 								<label for="fontSize">Font size:</label>
 								<label for="fontSize" id="fontSizeValue">120</label><label for="fontSize">%</label>
 							</small>
-							<input type="range" id="fontSize" name="fontSize" data-slider-value="120" data-slider-min="10" data-slider-max="250" data-slider-step="1" data-slider-ticks="[10,25,120,250]" data-slider-ticks-snap-bounds="0">
+							<input type="range" id="fontSize" name="fontSize" aria-label="Font size" data-slider-value="120" data-slider-min="10" data-slider-max="250" data-slider-step="1" data-slider-ticks="[10,25,120,250]" data-slider-ticks-snap-bounds="0">
 						</div>
 						<div class='col-sm-3'>
 							<small>
 								<label for="promptWidth">Width:</label>
 								<label for="promptWidth" id="promptWidthValue">84</label><label for="promptWidth">%</label>
 							</small>
-							<input type="range" id="promptWidth" name="promptWidth" data-slider-value="84" data-slider-min="5" data-slider-max="100" data-slider-step="1" data-slider-ticks="[5,16,84,100]" data-slider-ticks-snap-bounds="0">
+							<input type="range" id="promptWidth" name="promptWidth" aria-label="Prompt width" data-slider-value="84" data-slider-min="5" data-slider-max="100" data-slider-step="1" data-slider-ticks="[5,16,84,100]" data-slider-ticks-snap-bounds="0">
 						</div>
 					</div>
 					<div class='col-md-2 col-sm-2'>

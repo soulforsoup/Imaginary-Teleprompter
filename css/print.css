@@ -1,0 +1,118 @@
+/*
+	Imaginary Teleprompter — Print Stylesheet
+	Print-friendly output: clean black-on-white text, no UI chrome.
+*/
+
+/* Hide everything except the prompt content */
+body > * {
+	display: none !important;
+}
+
+/* Show only the prompt div */
+#prompt,
+#prompt * {
+	display: block !important;
+	visibility: visible !important;
+}
+
+/* Reset body for print */
+body {
+	background: white !important;
+	color: black !important;
+	font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+	font-size: 12pt !important;
+	line-height: 1.6 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	-webkit-touch-callout: none !important;
+}
+
+/* Show prompt area full-width */
+#wrapper,
+#sidebar-wrapper,
+.bs-docs-header,
+.bs-docs-header.collapse,
+#content,
+#top {
+	display: none !important;
+}
+
+#prompt {
+	display: block !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+/* Ensure links show their URLs */
+#prompt a:after {
+	content: " (" attr(href) ")";
+	font-size: 0.85em;
+	color: #555;
+}
+
+/* Remove images that reference external URLs (online-only) */
+#prompt img[src^="http"] {
+	display: none !important;
+}
+
+/* Keep local images (img/ folder) but size them reasonably */
+#prompt img {
+	max-width: 4in !important;
+	height: auto !important;
+	page-break-inside: avoid !important;
+}
+
+/* Headings */
+#prompt h1,
+#prompt h2,
+#prompt h3,
+#prompt h4 {
+	page-break-after: avoid !important;
+	color: black !important;
+}
+
+#prompt h1 { font-size: 20pt !important; }
+#prompt h2 { font-size: 16pt !important; }
+#prompt h3 { font-size: 14pt !important; }
+#prompt h4 { font-size: 12pt !important; }
+
+/* Paragraphs */
+#prompt p {
+	margin-bottom: 0.5em !important;
+}
+
+/* Lists */
+#prompt ul,
+#prompt ol {
+	margin-left: 1.5em !important;
+	margin-bottom: 0.5em !important;
+}
+
+/* Blockquotes / special content */
+#prompt blockquote {
+	border-left: 3pt solid #ccc !important;
+	padding-left: 0.5em !important;
+	margin-left: 0 !important;
+	font-style: italic !important;
+}
+
+/* Page breaks */
+#prompt hr {
+	border: none !important;
+	border-top: 1pt solid #ccc !important;
+	margin: 1em 0 !important;
+	page-break-after: avoid !important;
+}
+
+#prompt table {
+	border-collapse: collapse !important;
+	font-size: 10pt !important;
+}
+
+#prompt td,
+#prompt th {
+	border: 1pt solid #ccc !important;
+	padding: 4pt !important;
+}

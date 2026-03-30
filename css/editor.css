@@ -882,3 +882,38 @@ img.cke_anchor {
 .input-group .form-control {
   border-radius: 0 6px 6px 0;
 }
+
+/* =============================================
+   Auto-Save Status Indicator
+   ============================================= */
+.save-status {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 4px;
+  transition: opacity 200ms ease;
+  display: inline-block;
+  vertical-align: middle;
+  min-width: 60px;
+  text-align: center;
+}
+
+.save-status--muted {
+  color: var(--text-muted);
+}
+
+.save-status--success {
+  color: var(--success);
+}
+
+/* =============================================
+   Toolbar Export Buttons
+   ============================================= */
+.navbar-nav li > a[aria-label] i {
+  transition: color var(--transition);
+}
+
+.navbar-nav li > a[aria-label]:hover i {
+  color: var(--accent) !important;
+}

@@ -47,7 +47,9 @@ var debug = false;
     var syncMethod = syncMethods.instance,
         forceSecondaryDisplay = false,
         domain, tic, instance = [false, false],
-        htmldata, editorFocused = false;
+        htmldata;
+    // Expose editorFocused globally so teleprompter.js can read it (cross-window/popup scenario)
+    window.editorFocused = false;
 
     if ( syncMethod === syncMethods.canvas ) {
         forceSecondaryDisplay = true;
@@ -107,18 +109,30 @@ var debug = false;
         ];
         // Data binding for advanced options
         slider[0].on("change", function(input) {
-            document.getElementById("speedValue").textContent = parseFloat(Math.round(input.newValue * 10) / 10).toFixed(1);
+            // Clamp speed to valid range [1, 20]
+            var val = Math.max(1, Math.min(20, parseFloat(input.newValue)));
+            slider[0].setValue(val);
+            document.getElementById("speedValue").textContent = parseFloat(Math.round(val * 10) / 10).toFixed(1);
         });
         slider[1].on("change", function(input) {
-            document.getElementById("accelerationValue").textContent = parseFloat(Math.round(input.newValue * 100) / 100).toFixed(2);
+            // Clamp acceleration to valid range [0.5, 1.8]
+            var val = Math.max(0.5, Math.min(1.8, parseFloat(input.newValue)));
+            slider[1].setValue(val);
+            document.getElementById("accelerationValue").textContent = parseFloat(Math.round(val * 100) / 100).toFixed(2);
         });
         slider[2].on("change", function(input) {
-            document.getElementById("fontSizeValue").textContent = input.newValue;
-            updateFont(input.newValue);
+            // Clamp font size to valid range [10, 250]
+            var val = Math.max(10, Math.min(250, parseInt(input.newValue, 10)));
+            slider[2].setValue(val);
+            document.getElementById("fontSizeValue").textContent = val;
+            updateFont(val);
         });
         slider[3].on("change", function(input) {
-            document.getElementById("promptWidthValue").textContent = input.newValue;
-            updateWidth(input.newValue);
+            // Clamp prompt width to valid range [5, 100]
+            var val = Math.max(5, Math.min(100, parseInt(input.newValue, 10)));
+            slider[3].setValue(val);
+            document.getElementById("promptWidthValue").textContent = val;
+            updateWidth(val);
         });
         // Set credits button
         document.getElementById("credits-link").onclick = credits;
@@ -352,11 +366,11 @@ var debug = false;
             setup: function(editor) {
                 // Don't close editor when out of focus.
                 editor.on("blur", function() {
-                    editorFocused = false;
+                    window.editorFocused = false;
                     return false;
                 });
                 editor.on("focus", function() {
-                    editorFocused = true;
+                    window.editorFocused = true;
                 });
             },
             style_formats: [{
@@ -516,10 +530,17 @@ var debug = false;
     }
 
     function credits() {
-        // Get credits page.
-        xmlhttp.open("GET", "credits.html", true);
-        xmlhttp.send();
-        toggleFullscreen();
+        // Load credits page asynchronously and show when ready
+        fetch("credits.html")
+            .then(function(response) { return response.text(); })
+            .then(function(text) {
+                htmldata = text;
+                toggleFullscreen();
+                internalCredits();
+            })
+            .catch(function(err) {
+                if (debug) console.error("Failed to load credits:", err);
+            });
     }
 
     function updatePrompterData( override ) {
@@ -820,7 +841,7 @@ var debug = false;
         // keyCode is announced to be deprecated but not all browsers support key as of 2016.
         if (event.key === undefined)
             event.key = event.keyCode;
-        if (!editorFocused) {
+        if (!window.editorFocused) {
             if (debug) console.log(event.key);
             switch (event.key) {
                 // TELEPROMPTER COMMANDS
@@ -1334,13 +1355,29 @@ var debug = false;
         });
 
        function save() {
+            // Show saving status
+            showSaveStatus('Saving...', 'muted');
             if (sid.currentElement != 0) {
                 var scriptsData = sid.getElements();
                 scriptsData[sid.currentElement]["data"] = document.getElementById("prompt").innerHTML;
                 sid.getSaveMode().setItem(sid.getDataKey(), JSON.stringify(scriptsData));
             }
+            // Show saved status
+            showSaveStatus('Saved ✓', 'success');
             // Show toast notification
             showSaveToast();
+        }
+
+        function showSaveStatus(text, type) {
+            var el = document.getElementById('saveStatus');
+            if (!el) return;
+            el.textContent = text;
+            el.className = 'save-status save-status--' + type;
+            clearTimeout(el.hideTimeout);
+            el.hideTimeout = setTimeout(function() {
+                el.textContent = '';
+                el.className = 'save-status';
+            }, 2000);
         }
 
         function showSaveToast() {
@@ -1414,13 +1451,13 @@ var debug = false;
             });
 
             editor.on('focus', function() {
-                editorFocused = true;
+                window.editorFocused = true;
                 if (debug) console.log('Editor focused.');
                 // save();
             });
 
             editor.on('blur', function() {
-                editorFocused = false;
+                window.editorFocused = false;
                 if (debug) console.log('Editor out of focus.');
                 save();
             });
@@ -1432,6 +1469,34 @@ var debug = false;
             document.querySelector("#wrapper").classList.toggle("toggled");
             save();
         };
+
+        // Export: Copy as plain text
+        var copyBtn = document.getElementById("copyPlainText");
+        if (copyBtn) {
+            copyBtn.onclick = function(e) {
+                e.preventDefault();
+                var html;
+                if (typeof CKEDITOR !== "undefined" && CKEDITOR.instances.prompt)
+                    html = CKEDITOR.instances.prompt.getData();
+                else
+                    html = document.getElementById("prompt").innerHTML;
+                var txt = html.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+                navigator.clipboard.writeText(txt).then(function() {
+                    showSaveStatus('Copied!', 'success');
+                }).catch(function() {
+                    showSaveStatus('Failed', 'error');
+                });
+            };
+        }
+
+        // Export: Print script
+        var printBtn = document.getElementById("printScript");
+        if (printBtn) {
+            printBtn.onclick = function(e) {
+                e.preventDefault();
+                window.print();
+            };
+        }
     }
 
     // Initialize objects after DOM is loaded

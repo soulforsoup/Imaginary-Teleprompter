@@ -1212,7 +1212,8 @@ https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase/onversionchange
             case 8:
             case "Backspace":
             case "backspace":
-                resetTimer();
+                // Only reset timer if editor is not focused to avoid backspace conflict
+                if (!editorFocused) resetTimer();
                 break;
             case 36:
             case "Home":
@@ -1249,6 +1250,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase/onversionchange
     };
 
     function remoteControls() {
+        if (stopRemoteControls) return;
         var res;
         dataManager.getItem("IFTeleprompterControl",function(data){
             res = JSON.parse(data);
@@ -1258,8 +1260,17 @@ https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase/onversionchange
                 document.onkeydown(res);
             }
         }
-        setTimeout(remoteControls, 0);
+        remoteControlsTimer = setTimeout(remoteControls, 250);
     }
+
+    var stopRemoteControls = false;
+    var remoteControlsTimer = null;
+
+    // Stop remote controls on cleanup
+    window.addEventListener('beforeunload', function() {
+        stopRemoteControls = true;
+        if (remoteControlsTimer) clearTimeout(remoteControlsTimer);
+    });
 
     function isFunction( possibleFunction ) {
         return typeof(possibleFunction)===typeof(Function)

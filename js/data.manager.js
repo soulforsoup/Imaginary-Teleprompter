@@ -29,36 +29,53 @@ var dataManager = {
 	getItem: function(key,item,local,force){
 		if (local === 'undefined')
 		    local = 0;
-		if (inElectron() && local == 2)
-		    httpRequest("GET", key, item,force);
-		else if (inElectron() || local == 1)
-		    item(localStorage.getItem(key));
-		else
-		    item(sessionStorage.getItem(key));
+		try {
+			if (inElectron() && local == 2)
+			    httpRequest("GET", key, item,force);
+			else if (inElectron() || local == 1)
+			    item(localStorage.getItem(key));
+			else
+			    item(sessionStorage.getItem(key));
+		} catch(e) {
+			console.error("dataManager.getItem error for key '" + key + "':", e);
+			item(null);
+		}
     },
     setItem: function (key,item,local) {
 		if (local === 'undefined')
 		    local = 0;
-		if (inElectron() && local == 2)
-		    httpRequest("POST",key,item,true);
-		else if (inElectron() || local == 1)
-		    localStorage.setItem(key, item);
-		else
-		    sessionStorage.setItem(key, item);
+		try {
+			if (inElectron() && local == 2)
+			    httpRequest("POST",key,item,true);
+			else if (inElectron() || local == 1)
+			    localStorage.setItem(key, item);
+			else
+			    sessionStorage.setItem(key, item);
+		} catch(e) {
+			console.error("dataManager.setItem error for key '" + key + "':", e);
+		}
     },
     removeItem: function (key,local) {
 		if (local === 'undefined')
 		    local = 0;
-		if (inElectron() && local == 2)
-		    httpRequest("POST",key,item,true);
-		else if (inElectron() || local == 1)
-		    localStorage.removeItem(key);
-		else
-		    sessionStorage.removeItem(key);
+		try {
+			if (inElectron() && local == 2)
+			    httpRequest("POST",key,item,true);
+			else if (inElectron() || local == 1)
+			    localStorage.removeItem(key);
+			else
+			    sessionStorage.removeItem(key);
+		} catch(e) {
+			console.error("dataManager.removeItem error for key '" + key + "':", e);
+		}
     },
     clearAll: function () {
-    	sessionStorage.clear();
-    	localStorage.clear();
+    	try {
+	    	sessionStorage.clear();
+	    	localStorage.clear();
+    	} catch(e) {
+    		console.error("dataManager.clearAll error:", e);
+    	}
     }
 };
 
