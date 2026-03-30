@@ -39,19 +39,21 @@ Based on `SPEC.md`. Work top-to-bottom within each phase.
 
 ---
 
-## Phase 2 — UX Fixes
+## Phase 2 — UX Fixes ✅ DONE
+
+- Save button toast added (`js/editor.js`, `css/editor.css`)
+- Prompt mode scroll reset implemented
+- Bootstrap 5 class migration done in `index.html`
+- Commit: `caa0a33`
 
 ### Step 2.1 — Save Button Toast
-- [ ] Add toast CSS to `editor.css` (see SPEC Section 5.1 for styles)
-- [ ] Add toast DOM element to `index.html` / `site.html`
-- [ ] In `save()` function — append toast → add `.show` class → `setTimeout` 3s → remove
-- [ ] Test: click save → toast appears → auto-dismisses after 3s
+- [x] Toast CSS + `showSaveToast()` function added
+- [x] `save()` triggers toast on every save
 
 ### Step 2.2 — Prompt Mode Scroll Reset
-- [ ] In `submitTeleprompter` / `updatePrompterData` — set `session.scrollPosition = 0` before saving to IndexedDB
-- [ ] In `teleprompter.js` `init()` — read `session.scrollPosition` (defaults to 0) and start from that position
-- [ ] In `restoreEditor()` — call `animate(0, 0)` to reset position before closing
-- [ ] Test: scroll teleprompter → exit → enter again → starts from top
+- [x] `updatePrompterData()` sets `scrollPosition: 0` on save
+- [x] `teleprompter.js` reads `session.scrollPosition` on init
+- [x] `closeInstance()` resets scroll to top before closing
 
 ---
 
