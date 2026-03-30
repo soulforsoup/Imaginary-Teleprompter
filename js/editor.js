@@ -580,7 +580,7 @@ var debug = false;
             voice = false;
         // Merge all settings into one.
         var settings = '{ "data": {"primary":'+primary+',"secondary":'+secondary+',"prompterStyle":'+style+',"focusMode":'+focusArea+',"speed":'+speed+',"acceleration":'+acceleration+',"fontSize":'+fontSize+',"promptWidth":'+promptWidth+',"timer":'+timer+',"voice":'+voice+'}}',
-        session = '{ "html":"' + encodeURIComponent(htmldata) + '" }';
+        session = '{ "html":"' + encodeURIComponent(htmldata) + '", "scrollPosition":0 }';
 
         // Store data locally for prompter to use
         dataManager.setItem("IFTeleprompterSettings", settings, 1);
@@ -1339,6 +1339,24 @@ var debug = false;
                 scriptsData[sid.currentElement]["data"] = document.getElementById("prompt").innerHTML;
                 sid.getSaveMode().setItem(sid.getDataKey(), JSON.stringify(scriptsData));
             }
+            // Show toast notification
+            showSaveToast();
+        }
+
+        function showSaveToast() {
+            var toast = document.getElementById('saveToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'saveToast';
+                toast.className = 'toast';
+                toast.textContent = 'Saved ✓';
+                document.body.appendChild(toast);
+            }
+            toast.classList.add('show');
+            clearTimeout(toast.hideTimeout);
+            toast.hideTimeout = setTimeout(function() {
+                toast.classList.remove('show');
+            }, 3000);
         }
 
         sid.selectedElement = function(element) {

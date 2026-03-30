@@ -41,7 +41,7 @@
 	<!--<script src="tinymce/tinymce.min.js"></script>-->
 </head>
 <body>
-	<div id="wrapper" class="toggled hidden-xs">
+	<div id="wrapper" class="toggled d-none d-sm-block">
 		<!-- Sidebar -->
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav" id="scripts">
@@ -56,13 +56,13 @@
 		<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
 			<div class="container">
 				<div class='row'>
-					<ul class="nav navbar-nav navbar-left hidden-xs" style="padding-right:20px;">
+					<ul class="nav navbar-nav me-auto d-none d-sm-block" style="padding-right:20px;">
 						<li><a id="menu-toggle" href="#menu-toggle"><img style="width:26px;" src="fonts/noto-emoji-master/emoji_u1f4be.svg"></a></li>
 					</ul>
 					<div class="navbar-header">
 						<a class="external navbar-brand" href="https://imaginary.tech/teleprompter/" target="_blank"><img src="img/logo.png" alt="Teleprompter" ></a>
 					</div>
-					<ul class="nav navbar-nav navbar-right">
+					<ul class="nav navbar-nav ms-auto">
 						<li><a id="advConfig" href="#content" data-toggle="collapse"><img style="width:26px;" src="fonts/noto-emoji-master/emoji_u2699.svg"></a></li>
 						<li><a id="updateIt" class="hidden" href=" ">Update</a></li>
 						<li><a id="promptIt" href=" ">Prompt It!</a></li>
@@ -350,20 +350,20 @@
 					<div class="row">
 						<div class="col-md-12">
 							<form class="form-horizontal">
-								<div class="form-group">
+								<div class="mb-3">
 									<label for="inputName" class="col-sm-2 control-label">Title</label>
 									<div class="col-sm-10">
 										<input type="text" class="form-control" id="inputName" placeholder="Title" pattern="/([ -z])+/g" required>
 									</div>
 								</div>
-								<div class="form-group hidden">
+								<div class="mb-3 d-none">
 									<label for="inputID" class="col-sm-2 control-label">ID</label>
 									<div class="col-sm-10">
 										<input type="text" class="form-control" id="inputID" placeholder="title" disabled>
 									</div>
 								</div>
-								<!-- Remove hidden class to use these debugging fields. -->
-								<div class="form-group hidden">
+								<!-- Remove d-none class to use these debugging fields. -->
+								<div class="mb-3 d-none">
 									<div class="col-sm-offset-2 col-sm-10">
 										<div class="checkbox">
 											<label>

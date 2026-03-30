@@ -217,10 +217,13 @@ https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase/onversionchange
         window.setTimeout( function() {
             setScreenHeight();
             setPromptHeight();
-            // If flipped vertically, set start at inverted top.
+            // Read scroll position from session (defaults to 0 = top)
+            var startPosition = (session && session.scrollPosition !== undefined) ? session.scrollPosition : 0;
+            // If flipped vertically, adjust start position
             if (flipV) {
-                animate(0,-promptHeight+screenHeight);
+                startPosition = -promptHeight + screenHeight;
             }
+            animate(0, startPosition);
 
             // Save current screen position related settings for when resize and screen rotation ocurrs.
             previousPromptHeight = promptHeight;
@@ -392,6 +395,15 @@ https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase/onversionchange
     function closeInstance() {
         if (!closing) {
             closing = true;
+            // Reset scroll position to top before closing
+            x = 0;
+            setCurrPosStill(0);
+            animate(0, 0);
+            // Update session with scroll position reset
+            try {
+                session.scrollPosition = 0;
+                dataManager.setItem("IFTeleprompterSession", JSON.stringify(session), 1);
+            } catch(e) {}
             // Finally, close this window or clear iFrame. The editor must not be the one who closes cause it could cause an infinite loop.
             if ( inIframe() ) {
                 if (debug) console.log("Closing iFrame prompter.") && false;
